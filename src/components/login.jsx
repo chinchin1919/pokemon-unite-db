@@ -1,20 +1,17 @@
-import React, { useState, useContext } from 'react';
+import { useState } from 'react';
+import useUserInfoContext from './userInfo.jsx';
 
 const SignIn = (props) => {
   const setUserName = { props };
   // const [userInfo, setUserInfo] = useState({
   //   displayName: ''
   // })
-  const userInfo = React.createContext({
-    displayName: '',
-  });
 
   const handleUserInfo = (key, value) /* key: string value: any */ => {
     // let changed = userInfo;
     // changed[key] = value;
     // console.log(key, value);
     // setUserInfo(changed);
-    
   };
 
   return (
@@ -32,7 +29,7 @@ const SignIn = (props) => {
 
           <button
             type="submit"
-            onSubmit={console.log(userInfo)}
+            onSubmit={console.log()}
             className="w-full text-center py-3 btn btn-primary"
           >
             Start Chatting
