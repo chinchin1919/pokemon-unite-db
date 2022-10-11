@@ -1,6 +1,6 @@
 import { useState, createContext } from 'react';
 import './App.css';
-import SignIn from './components/login';
+import SignIn from './components/signin';
 import { UserInfoProvider } from './components/userInfo';
 
 function App() {

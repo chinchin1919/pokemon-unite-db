@@ -2,17 +2,26 @@ import { useState } from 'react';
 import { useUserInfoContext } from './userInfo';
 
 const SignIn = (props) => {
-  const { userInfo, setUserInfo } = useUserInfoContext();
+  // const { userInfo, setUserInfo } = useUserInfoContext();
+  const { userInfo } = useUserInfoContext();
   const setUserName = { props };
   // const [userInfo, setUserInfo] = useState({
   //   displayName: ''
   // })
 
   const handleUserInfo = (key, value) /* key: string value: any */ => {
-    let changed = userInfo;
+    console.log(`${key}: ${value}`);
+    let changed = userInfo.current;
     changed[key] = value;
-    console.log(key, value);
-    setUserInfo(changed);
+
+    userInfo.current = changed;
+
+    // setUserInfo(changed);
+  };
+
+  const handleSubmit = () => {
+    const current = JSON.stringify(userInfo.current);
+    console.log(`Submitted: ${current}`);
   };
 
   return (
@@ -30,7 +39,7 @@ const SignIn = (props) => {
 
           <button
             type="submit"
-            onSubmit={console.log()}
+            onClick={() => handleSubmit()}
             className="w-full text-center py-3 btn btn-primary"
           >
             Start Chatting
