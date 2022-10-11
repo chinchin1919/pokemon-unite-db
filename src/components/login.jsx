@@ -9,10 +9,10 @@ const SignIn = (props) => {
   // })
 
   const handleUserInfo = (key, value) /* key: string value: any */ => {
-    // let changed = userInfo;
-    // changed[key] = value;
-    // console.log(key, value);
-    // setUserInfo(changed);
+    let changed = userInfo;
+    changed[key] = value;
+    console.log(key, value);
+    setUserInfo(changed);
   };
 
   return (

@@ -1,14 +1,15 @@
 import { useState, createContext } from 'react';
 import './App.css';
 import SignIn from './components/login';
-
-export const UserName = createContext();
+import { UserInfoProvider } from './components/userInfo';
 
 function App() {
   return (
-    <div className="App">
-      <SignIn />
-    </div>
+    <UserInfoProvider>
+      <div className="App">
+        <SignIn />
+      </div>
+    </UserInfoProvider>
   );
 }
 
