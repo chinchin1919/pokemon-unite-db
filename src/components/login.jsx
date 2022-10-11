@@ -1,68 +1,78 @@
-import React, { useState, useContext} from 'react'
-
+import React, { useState, useContext } from 'react';
 
 const SignIn = (props) => {
   const setUserName = { props };
   // const [userInfo, setUserInfo] = useState({
   //   displayName: ''
   // })
-  const useInfo = React.createContext({
-    displayName: "",
-  })
+  const userInfo = React.createContext({
+    displayName: '',
+  });
 
   const handleUserInfo = (key, value) /* key: string value: any */ => {
-    let changed = userInfo
-    changed[key] = value
-    console.log(key, value)
-    setUserInfo(changed)
-  }
+    // let changed = userInfo;
+    // changed[key] = value;
+    // console.log(key, value);
+    // setUserInfo(changed);
+    
+  };
 
-  
+  return (
+    <div className="bg-grey-lighter min-h-screen flex flex-col">
+      <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+        <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+          <h1 className="mb-8 text-3xl text-center">What's your name?</h1>
+          <input
+            type="text"
+            className="block border border-grey-light w-full p-3 rounded mb-4"
+            name="displayname"
+            onChange={(e) => handleUserInfo('displayName', e.target.value)}
+            placeholder="Diplay Name"
+          />
 
-
-  return (<div className="bg-grey-lighter min-h-screen flex flex-col">
-    <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-      <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-        <h1 className="mb-8 text-3xl text-center">Sign up</h1>
-        <input
-          type="text"
-          className="block border border-grey-light w-full p-3 rounded mb-4"
-          name="displayname"
-          onChange={(e) => handleUserInfo("displayName", e.target.value)}
-          placeholder="Diplay Name" />
-
-        <button
-          type="submit"
-          onSubmit={
-            console.log(userInfo)
-          }
-          className="w-full text-center py-3 btn btn-primary">
+          <button
+            type="submit"
+            onSubmit={console.log(userInfo)}
+            className="w-full text-center py-3 btn btn-primary"
+          >
             Start Chatting
           </button>
 
-        <div className="text-center text-sm text-grey-dark mt-4">
-          By signing up, you agree to the
-          <a className="no-underline border-b border-grey-dark text-grey-dark" href="#">
-            Terms of Service
-          </a> and
-          <a className="no-underline border-b border-grey-dark text-grey-dark" href="#">
-            Privacy Policy
+          <div className="text-center text-sm text-grey-dark mt-4">
+            By signing up, you agree to the
+            <a
+              className="no-underline border-b border-grey-dark text-grey-dark"
+              href="#"
+            >
+              Terms of Service
+            </a>{' '}
+            and
+            <a
+              className="no-underline border-b border-grey-dark text-grey-dark"
+              href="#"
+            >
+              Privacy Policy
+            </a>
+          </div>
+        </div>
+
+        <div className="text-grey-dark mt-6">
+          Already have an account?
+          <a
+            className="no-underline border-b border-blue text-blue"
+            href="../login/"
+          >
+            Log in
           </a>
+          .
         </div>
       </div>
-
-      <div className="text-grey-dark mt-6">
-        Already have an account?
-        <a className="no-underline border-b border-blue text-blue" href="../login/">
-          Log in
-        </a>.
-      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-{/* <div className="bg-grey-lighter min-h-screen flex flex-col">
+{
+  /* <div className="bg-grey-lighter min-h-screen flex flex-col">
 <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
   <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
     <h1 className="mb-8 text-3xl text-center">Sign up</h1>
@@ -112,6 +122,7 @@ const SignIn = (props) => {
     </a>.
   </div>
 </div>
-</div> */}
+</div> */
+}
 
 export default SignIn;
