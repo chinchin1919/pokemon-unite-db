@@ -4,7 +4,7 @@ const UserInfo = createContext();
 
 export const useUserInfoContext = () => useContext(UserInfo);
 
-const UserInfoProvider = ({ children }) => {
+export const UserInfoProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({
     displayName: '',
   });
@@ -14,5 +14,3 @@ const UserInfoProvider = ({ children }) => {
   };
   return <UserInfo.Provider value={value}>{children}</UserInfo.Provider>;
 };
-
-export default { UserInfoProvider };

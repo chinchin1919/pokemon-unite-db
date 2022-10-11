@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import useUserInfoContext from './userInfo.jsx';
+import useUserInfoContext from './userInfo';
 
 const SignIn = (props) => {
+  const { userInfo, setUserInfo } = useUserInfoContext();
   const setUserName = { props };
   // const [userInfo, setUserInfo] = useState({
   //   displayName: ''
