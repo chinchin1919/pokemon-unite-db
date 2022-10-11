@@ -17,6 +17,7 @@ export const UserInfoProvider = ({ children }) => {
   });
   const value = {
     userInfo,
+    // setItem, // Set to localStorage
   };
   return <UserInfo.Provider value={value}>{children}</UserInfo.Provider>;
 };

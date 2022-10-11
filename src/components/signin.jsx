@@ -22,6 +22,7 @@ const SignIn = (props) => {
   const handleSubmit = () => {
     const current = JSON.stringify(userInfo.current);
     console.log(`Submitted: ${current}`);
+    localStorage.setItem('daisyuiChatUserInfo', current);
   };
 
   return (
