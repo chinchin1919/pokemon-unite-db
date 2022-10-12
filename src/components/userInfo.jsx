@@ -19,10 +19,17 @@ export const UserInfoProvider = ({ children }) => {
   const tempLocalUserInfo = getLocalStorage(userInfoKey);
   console.log(`LocalUserInfo : ${JSON.stringify(tempLocalUserInfo)}`);
   let userInfo = useRef(
-    tempLocalUserInfo ? tempLocalUserInfo : { displayName: '' }
+    tempLocalUserInfo
+      ? JSON.parse(tempLocalUserInfo)
+      : {
+          displayName: '',
+        }
   );
 
-  useEffect(() => localStorage.setItem(userInfoKey, userInfo), [userInfo]);
+  useEffect(() => {
+    localStorage.setItem(userInfoKey, String(JSON.stringify(userInfo.current)));
+    console.log('Changed');
+  }, [userInfo]);
 
   const value = {
     userInfo,

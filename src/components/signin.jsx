@@ -10,6 +10,7 @@ const SignIn = (props) => {
   const handleUserInfo = (key, value) /* key: string value: any */ => {
     console.log(`${key}: ${value}`);
     let changed = userInfo.current;
+
     changed[key] = value;
 
     userInfo.current = changed;
@@ -20,7 +21,6 @@ const SignIn = (props) => {
   const handleSubmit = () => {
     const current = JSON.stringify(userInfo.current);
     console.log(`Submitted: ${current}`);
-    localStorage.setItem('daisyuiChatUserInfo', current);
   };
 
   return (
