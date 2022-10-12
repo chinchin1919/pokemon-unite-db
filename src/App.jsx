@@ -1,7 +1,8 @@
 import { useState, createContext } from 'react';
 import './App.css';
 import SignIn from './components/signin';
-import { UserInfoProvider } from './components/userInfo';
+import { UserInfoProvider } from './components/userInfo.jsx';
+import { LocalStorageProvider } from './components/localStorage.jsx';
 
 function App() {
   return (
