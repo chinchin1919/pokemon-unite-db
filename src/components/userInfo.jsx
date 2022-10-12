@@ -17,7 +17,6 @@ export const UserInfoProvider = ({ children }) => {
   // };
   const userInfoKey = 'daisyuiChatApp';
   const tempLocalUserInfo = getLocalStorage(userInfoKey);
-  console.log(`LocalUserInfo : ${JSON.stringify(tempLocalUserInfo)}`);
   let userInfo = useRef(
     tempLocalUserInfo
       ? JSON.parse(tempLocalUserInfo)
@@ -25,11 +24,12 @@ export const UserInfoProvider = ({ children }) => {
           displayName: '',
         }
   );
+  console.log(`typeof userInfo: ${typeof userInfo} \n ${userInfo.current}`);
 
-  useEffect(() => {
-    localStorage.setItem(userInfoKey, String(JSON.stringify(userInfo.current)));
-    console.log('Changed');
-  }, [userInfo]);
+  // useEffect(() => {
+  //   localStorage.setItem(userInfoKey, String(JSON.stringify(userInfo.current)));
+  //   console.log('Changed');
+  // }, [userInfo]);
 
   const value = {
     userInfo,
