@@ -1,4 +1,4 @@
-import React, { useState, useContext, createContext, useRef } from 'react';
+import React, { useContext, createContext, useRef, useEffect } from 'react';
 import { useLocalStorage } from './localStorage.jsx';
 
 const UserInfo = createContext();
@@ -21,7 +21,7 @@ export const UserInfoProvider = ({ children }) => {
     tempLocalUserInfo ? tempLocalUserInfo : { displayName: '' }
   );
 
-  useEffect(() => localStorage.setItem(userInfoKey, localUserInfo), [userInfo]);
+  useEffect(() => localStorage.setItem(userInfoKey, userInfo), [userInfo]);
 
   const value = {
     userInfo,
