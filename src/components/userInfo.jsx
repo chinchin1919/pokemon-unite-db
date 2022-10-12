@@ -15,7 +15,7 @@ export const UserInfoProvider = ({ children }) => {
   //   userInfo,
   //   setUserInfo,
   // };
-  const userInfoKey = '';
+  const userInfoKey = 'daisyuiChatApp';
   const tempLocalUserInfo = getLocalStorage(userInfoKey);
   console.log(`LocalUserInfo : ${JSON.stringify(tempLocalUserInfo)}`);
   let userInfo = useRef(
