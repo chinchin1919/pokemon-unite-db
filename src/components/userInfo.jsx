@@ -6,7 +6,7 @@ const UserInfo = createContext();
 export const useUserInfoContext = () => useContext(UserInfo);
 
 export const UserInfoProvider = ({ children }) => {
-  const { localUserInfo } = useLocalStorage();
+  const { getLocalStorage } = useLocalStorage();
 
   // const [userInfo, setUserInfo] = useState({
   //   displayName: '',
@@ -15,9 +15,16 @@ export const UserInfoProvider = ({ children }) => {
   //   userInfo,
   //   setUserInfo,
   // };
-  let userInfo = useRef({
-    displayName: '',
-  });
+  const userInfoKey = '';
+  const tempLocalUserInfo = getLocalStorage(userInfoKey);
+  let userInfo = useRef(
+    tempLocalUserInfo ? tempLocalUserInfo : { displayName: '' }
+  );
+
+  useEffect(
+    () => localStorage.setItem(userInfoKey, localUserInfo),
+    [localUserInfo]
+  );
 
   const value = {
     userInfo,

@@ -3,13 +3,8 @@ import { useUserInfoContext } from './userInfo';
 import { useLocalStorage } from './localStorage.jsx';
 
 const SignIn = (props) => {
-  // const { userInfo, setUserInfo } = useUserInfoContext();
-  const { userInfo } = useUserInfoContext();
-  // const { localUserInfo } = useLocalStorage(); @fixme エラー出るからなおす
+  const { getLocalStorage, setLocalStorage } = useLocalStorage();
   const setUserName = { props };
-  // const [userInfo, setUserInfo] = useState({
-  //   displayName: ''
-  // })
 
   const handleUserInfo = (key, value) /* key: string value: any */ => {
     console.log(`${key}: ${value}`);

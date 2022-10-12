@@ -6,11 +6,13 @@ import { LocalStorageProvider } from './components/localStorage.jsx';
 
 function App() {
   return (
-    <UserInfoProvider>
-      <div className="App">
-        <SignIn />
-      </div>
-    </UserInfoProvider>
+    <LocalStorageProvider>
+      <UserInfoProvider>
+        <div className="App">
+          <SignIn />
+        </div>
+      </UserInfoProvider>
+    </LocalStorageProvider>
   );
 }
 
