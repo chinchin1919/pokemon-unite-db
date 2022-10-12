@@ -17,6 +17,7 @@ export const UserInfoProvider = ({ children }) => {
   // };
   const userInfoKey = '';
   const tempLocalUserInfo = getLocalStorage(userInfoKey);
+  console.log(`LocalUserInfo : ${JSON.stringify(tempLocalUserInfo)}`);
   let userInfo = useRef(
     tempLocalUserInfo ? tempLocalUserInfo : { displayName: '' }
   );

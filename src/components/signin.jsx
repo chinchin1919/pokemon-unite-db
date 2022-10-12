@@ -4,6 +4,7 @@ import { useLocalStorage } from './localStorage.jsx';
 
 const SignIn = (props) => {
   const { getLocalStorage, setLocalStorage } = useLocalStorage();
+  const { userInfo } = useUserInfoContext();
   const setUserName = { props };
 
   const handleUserInfo = (key, value) /* key: string value: any */ => {
