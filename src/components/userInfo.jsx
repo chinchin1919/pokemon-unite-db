@@ -21,10 +21,7 @@ export const UserInfoProvider = ({ children }) => {
     tempLocalUserInfo ? tempLocalUserInfo : { displayName: '' }
   );
 
-  useEffect(
-    () => localStorage.setItem(userInfoKey, localUserInfo),
-    [localUserInfo]
-  );
+  useEffect(() => localStorage.setItem(userInfoKey, localUserInfo), [userInfo]);
 
   const value = {
     userInfo,
