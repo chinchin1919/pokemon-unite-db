@@ -6,17 +6,14 @@ const UserInfo = createContext();
 export const useUserInfoContext = () => useContext(UserInfo);
 
 export const UserInfoProvider = ({ children }) => {
-  const { getLocalStorage } = useLocalStorage();
+  const isFirstRender = useRef(false);
 
-  // const [userInfo, setUserInfo] = useState({
-  //   displayName: '',
-  // });
-  // const value = {
-  //   userInfo,
-  //   setUserInfo,
-  // };
+  useEffect(() => (isFirstRender.current = true));
+
+  const { getLocalStorage } = useLocalStorage();
   const userInfoKey = 'daisyuiChatApp';
   const tempLocalUserInfo = getLocalStorage(userInfoKey);
+  console.log(tempLocalUserInfo);
   let userInfo = useRef(
     tempLocalUserInfo
       ? JSON.parse(tempLocalUserInfo)
@@ -24,12 +21,21 @@ export const UserInfoProvider = ({ children }) => {
           displayName: '',
         }
   );
-  console.log(`typeof userInfo: ${typeof userInfo} \n ${userInfo.current}`);
+  console.log(
+    `typeof userInfo: ${typeof userInfo} \n ${JSON.stringify(userInfo.current)}`
+  );
 
-  // useEffect(() => {
-  //   localStorage.setItem(userInfoKey, String(JSON.stringify(userInfo.current)));
-  //   console.log('Changed');
-  // }, [userInfo]);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
+      localStorage.setItem(
+        userInfoKey,
+        String(JSON.stringify(userInfo.current))
+      );
+      console.log('Changed');
+    }
+  }, [userInfo]);
 
   const value = {
     userInfo,
