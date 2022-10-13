@@ -20,6 +20,7 @@ export const UserInfoProvider = ({ children }) => {
       : {
           isLogin: false,
           displayName: '',
+          userID: 'olb8jo4zvkkp3ai1yymfd7mgf95f8joe',
         }
   );
   console.log(
