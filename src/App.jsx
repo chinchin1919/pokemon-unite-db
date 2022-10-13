@@ -3,6 +3,8 @@ import './App.css';
 import SignIn from './components/signin';
 import { useUserInfoContext } from './components/userInfo.jsx';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import NotFound from './pages/404.jsx';
+import Chat from './pages/ChatHome.jsx';
 
 function App() {
   const { isLogin } = useUserInfoContext();
@@ -13,7 +15,7 @@ function App() {
           <Route
             exact
             path="/"
-            element={isLogin ? <Home /> : <Navigate replace to="/signin" />}
+            element={isLogin ? <Navigate replace to="/signin" /> : <Chat />}
           />
           <Route
             path="/signin"

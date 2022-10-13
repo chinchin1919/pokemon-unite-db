@@ -1,3 +1,5 @@
 const NotFound = () => {
-  return <>Wow Wonderful</>;
+  return <>What do you want to do? Your URL is incorrect</>;
 };
+
+export default NotFound;
