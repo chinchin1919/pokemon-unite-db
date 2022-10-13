@@ -32,7 +32,10 @@ const SignIn = (props) => {
             type="text"
             className="block border border-grey-light w-full p-3 rounded mb-4"
             name="displayname"
-            onChange={(e) => handleUserInfo('displayName', e.target.value)}
+            onChange={(e) => {
+              handleUserInfo('displayName', e.target.value);
+              handleUserInfo('isLogin', true);
+            }}
             placeholder="Diplay Name"
           />
 

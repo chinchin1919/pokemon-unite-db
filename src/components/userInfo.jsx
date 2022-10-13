@@ -18,6 +18,7 @@ export const UserInfoProvider = ({ children }) => {
     tempLocalUserInfo
       ? JSON.parse(tempLocalUserInfo)
       : {
+          isLogin: false,
           displayName: '',
         }
   );
