@@ -4,10 +4,11 @@ import SignIn from './components/signin';
 import { useUserInfoContext } from './components/userInfo.jsx';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import NotFound from './pages/404.jsx';
-import Chat from './pages/ChatHome.jsx';
+import ChatHome from './pages/ChatHome.jsx';
 
 function App() {
-  const { isLogin } = useUserInfoContext();
+  const { userInfo } = useUserInfoContext();
+  console.log(`isLogin : ${JSON.stringify(userInfo.current.isLogin)}`);
   return (
     <div className="App">
       <BrowserRouter>
@@ -15,11 +16,23 @@ function App() {
           <Route
             exact
             path="/"
-            element={isLogin ? <Navigate replace to="/signin" /> : <Chat />}
+            element={
+              userInfo.current.isLogin ? (
+                <ChatHome />
+              ) : (
+                <Navigate replace to="/signin" />
+              )
+            }
           />
           <Route
             path="/signin"
-            element={isLogin ? <SignIn /> : <Navigate replace to="/" />}
+            element={
+              userInfo.current.isLogin ? (
+                <Navigate replace to="/" />
+              ) : (
+                <SignIn />
+              )
+            }
           />
           {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
           <Route path="*" element={<NotFound />} />

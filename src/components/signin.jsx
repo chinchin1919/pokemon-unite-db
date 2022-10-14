@@ -1,25 +1,26 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useUserInfoContext } from './userInfo';
 import { useLocalStorage } from './localStorage.jsx';
 
-const SignIn = (props) => {
-  const { getLocalStorage, setLocalStorage } = useLocalStorage();
-  const { userInfo } = useUserInfoContext();
-  const setUserName = { props };
+const SignIn = () => {
+  const { userInfo, setUserInfo } = useUserInfoContext();
+  const tempUserInfo = useRef(userInfo.current);
 
   const handleUserInfo = (key, value) /* key: string value: any */ => {
     console.log(`${key}: ${value}`);
-    let changed = userInfo.current;
+    let changed = tempUserInfo.current;
 
     changed[key] = value;
 
-    userInfo.current = changed;
+    // userInfo.current = changed;
 
     // setUserInfo(changed);
   };
 
   const handleSubmit = () => {
-    const current = JSON.stringify(userInfo.current);
+    const current = JSON.stringify(tempUserInfo.current);
+    userInfo.current = tempUserInfo.current;
+    setUserInfo(JSON.stringify(userInfo.current));
     console.log(`Submitted: ${current}`);
   };
 

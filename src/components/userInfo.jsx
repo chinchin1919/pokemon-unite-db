@@ -10,7 +10,7 @@ export const UserInfoProvider = ({ children }) => {
 
   useEffect(() => (isFirstRender.current = true));
 
-  const { getLocalStorage } = useLocalStorage();
+  const { getLocalStorage, setLocalStorage } = useLocalStorage();
   const userInfoKey = 'daisyuiChatApp';
   const tempLocalUserInfo = getLocalStorage(userInfoKey);
   console.log(tempLocalUserInfo);
@@ -26,21 +26,23 @@ export const UserInfoProvider = ({ children }) => {
   console.log(
     `typeof userInfo: ${typeof userInfo} \n ${JSON.stringify(userInfo.current)}`
   );
+  const setUserInfo = (value) => setLocalStorage(userInfoKey, value);
 
   useEffect(() => {
+    console.log(`isFirstRender: ${isFirstRender.current}`);
     if (isFirstRender.current) {
+      console.log('First Render');
       isFirstRender.current = false;
     } else {
-      localStorage.setItem(
-        userInfoKey,
-        String(JSON.stringify(userInfo.current))
-      );
+      console.log('LocalStorage Setted');
+      setLocalStorage(userInfoKey, userInfo.current);
       console.log('Changed');
     }
   }, [userInfo]);
 
   const value = {
     userInfo,
+    setUserInfo,
     // setItem, // Set to localStorage
   };
   return <UserInfo.Provider value={value}>{children}</UserInfo.Provider>;
