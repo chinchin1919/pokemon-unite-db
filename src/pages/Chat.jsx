@@ -23,7 +23,27 @@ const myBalloon = (text) => {
   );
 };
 
-const othersBalloon = (text) => {};
+const otherBalloon = (text) => {
+  return (
+    <div className="other-chat-message">
+      <div className="flex items-end">
+        <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
+          <div>
+            <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
+              {/* <ReactMarkdown children={text} /> */}
+              {text}
+            </span>
+          </div>
+        </div>
+        <img
+          src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
+          alt="My profile"
+          className="w-6 h-6 rounded-full order-2"
+        />
+      </div>
+    </div>
+  );
+};
 
 const Chat = (props) => {
   const [messages, setMessage] = useState([]);
@@ -84,7 +104,7 @@ const Chat = (props) => {
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
         <div className="relative flex items-center space-x-4">
           <div className="relative">
-            <span className="absolute text-green-500 right-0 bottom-0">
+            <span className="absolute tshiext-green-500 right-0 bottom-0">
               <svg width="20" height="20">
                 <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
               </svg>
