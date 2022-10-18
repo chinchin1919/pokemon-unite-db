@@ -9,7 +9,7 @@ const myBalloon = (text) => {
           <div>
             <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
               {/* <ReactMarkdown children={text} /> */}
-              text
+              {text}
             </span>
           </div>
         </div>
@@ -35,9 +35,13 @@ const Chat = (props) => {
 
   useEffect(() => {
     const poling = setInterval(() => {
-      fetch('')
+      fetch(
+        'https://script.googleusercontent.com/a/macros/f-sapporo.ed.jp/echo?user_content_key=BH8Kv2-HKQYYjlY7IqN45V38lEL1SzoVswu9259GzCNqdZheAUGElDH3UAFpbK1dMbrZjzC6hxqRxGzjnLYTBDnLNLb8gvf3OJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMi80zadyHLKD69xnUh-IhrsfB63eL3TaQ1djiqESLJYkXNcZoe1zwbJVFMimvbwDGwkl1xMkIUh9GcDqYzi69rNwOzl2svdDzwiMeXCzRPHnYlXVu6ZSvRTMBkFmQ3nSn6aEFGJJrzo5cy6pr-Oj0FQ&lib=McovRLwPv54_SYyI5iluMo5-ZE1Y-KuHf'
+      )
         .then((response) => response.json())
         .then((json) => {
+          console.log(json);
+          console.log(JSON.parse(json[datas][data]));
           messages == json[datas][data]
             ? setMessage(json[datas][data])
             : console.log('Error: fetch failed');
@@ -70,12 +74,9 @@ const Chat = (props) => {
   }, []);
 
   const handleClick = () => {
-    let current = messages;
     console.log('Clicked');
     console.log(`Message: ${inputValue.current}`);
-    current.push(myBalloon(current));
-    console.log(current);
-    setMessage(current);
+    setMessage([...messages, myBalloon(inputValue.current)]);
   };
 
   return (
