@@ -5,6 +5,7 @@ import { useUserInfoContext } from './components/userInfo.jsx';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import NotFound from './pages/404.jsx';
 import ChatHome from './pages/ChatHome.jsx';
+import Chat from './pages/Chat.jsx';
 
 function App() {
   const { userInfo } = useUserInfoContext();
@@ -32,6 +33,12 @@ function App() {
               ) : (
                 <SignIn />
               )
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              userInfo.current.isLogin ? <Chat /> : <Navigate replace to="/" />
             }
           />
           {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
