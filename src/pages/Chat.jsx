@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
-const myBalloon = (text) => {
+const MyBalloon = ({ children }) => {
   return (
     <div className="my-chat-message">
       <div className="flex items-end justify-end">
@@ -9,7 +9,7 @@ const myBalloon = (text) => {
           <div>
             <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
               {/* <ReactMarkdown children={text} /> */}
-              {text}
+              {children}
             </span>
           </div>
         </div>
@@ -23,22 +23,21 @@ const myBalloon = (text) => {
   );
 };
 
-const otherBalloon = (text) => {
+const OtherBalloon = ({ children }) => {
   return (
-    <div className="other-chat-message">
+    <div className="chat-message">
       <div className="flex items-end">
-        <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
+        <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
           <div>
-            <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
-              {/* <ReactMarkdown children={text} /> */}
-              {text}
+            <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
+              {children}
             </span>
           </div>
         </div>
         <img
-          src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
+          src="https://static.wikia.nocookie.net/virtualyoutuber/images/4/4b/Nekomata_Okayu_Portrait.png"
           alt="My profile"
-          className="w-6 h-6 rounded-full order-2"
+          className="w-6 h-6 rounded-full order-1"
         />
       </div>
     </div>
@@ -96,7 +95,7 @@ const Chat = (props) => {
   const handleClick = () => {
     console.log('Clicked');
     console.log(`Message: ${inputValue.current}`);
-    setMessage([...messages, myBalloon(inputValue.current)]);
+    setMessage([...messages, <MyBalloon children={inputValue.current} />]);
   };
 
   return (
@@ -187,6 +186,8 @@ const Chat = (props) => {
         className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
       >
         {messages}
+
+        <OtherBalloon children={'Hello'} />
         <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
           <div className="relative flex">
             {/* <span className="absolute inset-y-0 flex items-center">
