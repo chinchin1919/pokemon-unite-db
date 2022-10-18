@@ -32,7 +32,9 @@ const Chat = (props) => {
     const poling = setInterval(() => {
       fetch('')
         .then((response) => response.json())
-        .then((json) => setMessage(json[datas][data]));
+        .then((json) => {
+          messages == json[datas][data] ? setMessage(json[datas][data]) : null;
+        })
       return clearInterval(poling);
     }, props.interval); // props.interval : useRef
   });
