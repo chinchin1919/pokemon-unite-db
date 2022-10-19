@@ -5,6 +5,15 @@ const UserInfo = createContext();
 
 export const useUserInfoContext = () => useContext(UserInfo);
 
+const makeStrID = (digits = 8) => {
+  const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let g = '';
+  for (i = 0; i < digits; i++) {
+    g += c[Math.floor(Math.random() * cl)];
+  }
+  return g;
+};
+
 export const UserInfoProvider = ({ children }) => {
   const isFirstRender = useRef(false);
 
@@ -20,7 +29,7 @@ export const UserInfoProvider = ({ children }) => {
       : {
           isLogin: false,
           displayName: '',
-          userID: 'olb8jo4zvkkp3ai1yymfd7mgf95f8joe',
+          userID: makeStrID(20),
         }
   );
   console.log(
