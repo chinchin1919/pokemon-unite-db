@@ -77,7 +77,8 @@ const Chat = (props) => {
       })
       .catch((e) => {
         console.log(e);
-        setMessage([(
+        setMessage([
+          (
 <div className="alert alert-warning shadow-lg vertical-align:super">
             <div>
               <svg
@@ -96,28 +97,30 @@ const Chat = (props) => {
               <span>Error: Can't connect with the Server</span>
             </div>
           </div>
-        ),
-      ]
         )
-      })
+          ,
+        ]);
+      });
 
-  useEffect(() => {
-    const poling = setInterval(() => {
-      getChat() 
-      return clearInterval(poling)
-    },props.interval); // props.interval : useRef()
-  }, []);
+    useEffect(() => {
+      const poling = setInterval(() => {
+        getChat();
+        return clearInterval(poling);
+      }, props.interval); // props.interval : useRef()
+    }, []);
 
-
-  const handleClick = () => {
-    console.log('Clicked');
-    console.log(`Message: ${inputRef.current.value}`);
-    fetch(
-      `https://script.google.com/macros/s/AKfycbyGRApn5hMMSRMsCX3rmuQHv9EQ8QTZE9Sh7uFnuCXxhcGqgEA5v2ChsjDzqFeNXCtMKQ/exec?body=${inputRef.current.value}&displayName=${userInfo.displayName}&userID=${userInfo.userID}&bodyType=text`
-    );
-    setMessage([...messages, <MyBalloon children={inputRef.current.value} />]);
-    inputRef.current.value = '';
-  };
+    const handleClick = () => {
+      console.log('Clicked');
+      console.log(`Message: ${inputRef.current.value}`);
+      fetch(
+        `https://script.google.com/macros/s/AKfycbyGRApn5hMMSRMsCX3rmuQHv9EQ8QTZE9Sh7uFnuCXxhcGqgEA5v2ChsjDzqFeNXCtMKQ/exec?body=${inputRef.current.value}&displayName=${userInfo.displayName}&userID=${userInfo.userID}&bodyType=text`
+      );
+      setMessage([
+        ...messages,
+        <MyBalloon children={inputRef.current.value} />,
+      ]);
+      inputRef.current.value = '';
+    };
 
   return (
     <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
