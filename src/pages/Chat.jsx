@@ -108,7 +108,7 @@ const Chat = (props) => {
           })
         );
       });
-    // setMessage([...messages, <MyBalloon children={inputRef.current.value} />]);
+    setMessage([...messages, <MyBalloon children={inputRef.current.value} />]);
     inputRef.current.value = '';
   };
 

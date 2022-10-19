@@ -19,7 +19,8 @@ function App() {
             path="/"
             element={
               userInfo.current.isLogin ? (
-                <ChatHome />
+                // <ChatHome />
+                <Navigate replace to="/chat" />
               ) : (
                 <Navigate replace to="/signin" />
               )
