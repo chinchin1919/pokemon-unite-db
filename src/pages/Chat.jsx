@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useUserInfoContext } from '../components/userInfo.jsx';
 
 const MyBalloon = ({ children }) => {
   return (
@@ -47,6 +48,7 @@ const OtherBalloon = ({ children }) => {
 const Chat = (props) => {
   const [messages, setMessage] = useState([]);
   const inputValue = useRef('');
+  const { userInfo } = useUserInfoContext();
 
   useEffect(() => {
     console.log('reRendered');
@@ -59,11 +61,20 @@ const Chat = (props) => {
       )
         .then((response) => response.json())
         .then((json) => {
+          json = JSON.parse(JSON.stringify(json));
           console.log(json);
-          console.log(JSON.parse(json[datas][data]));
-          messages == json[datas][data]
-            ? setMessage(json[datas][data])
-            : console.log('Error: fetch failed');
+          console.log(json.datas);
+          setMessage(
+            messages == json.datas.data
+              ? console.log('there are not post')
+              : json['datas']['data'].map((elm) =>
+                  userInfo.id == elm[2] ? (
+                    <MyBalloon children={elm[5]} />
+                  ) : (
+                    <OtherBalloon children={elm[5]} />
+                  )
+                )
+          );
         })
         .catch((e) => {
           console.log(e);
