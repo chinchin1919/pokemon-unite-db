@@ -47,66 +47,76 @@ const OtherBalloon = ({ children }) => {
 
 const Chat = (props) => {
   const [messages, setMessage] = useState([]);
-  const inputValue = useRef('');
+  const inputRef = useRef();
   const { userInfo } = useUserInfoContext();
 
   useEffect(() => {
     console.log('reRendered');
   });
 
+  const getChat = () => {
+    fetch(
+      'https://script.googleusercontent.com/a/macros/f-sapporo.ed.jp/echo?user_content_key=BH8Kv2-HKQYYjlY7IqN45V38lEL1SzoVswu9259GzCNqdZheAUGElDH3UAFpbK1dMbrZjzC6hxqRxGzjnLYTBDnLNLb8gvf3OJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMi80zadyHLKD69xnUh-IhrsfB63eL3TaQ1djiqESLJYkXNcZoe1zwbJVFMimvbwDGwkl1xMkIUh9GcDqYzi69rNwOzl2svdDzwiMeXCzRPHnYlXVu6ZSvRTMBkFmQ3nSn6aEFGJJrzo5cy6pr-Oj0FQ&lib=McovRLwPv54_SYyI5iluMo5-ZE1Y-KuHf'
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        json = JSON.parse(JSON.stringify(json));
+        console.log(json);
+        console.log(json.datas);
+        setMessage(
+          messages == json.datas.data
+            ? console.log('there are not post')
+            : json['datas']['data'].map((elm) =>
+                userInfo.id == elm[2] ? (
+                  <MyBalloon children={elm[5]} />
+                ) : (
+                  <OtherBalloon children={elm[5]} />
+                )
+              )
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+        setMessage([(
+<div className="alert alert-warning shadow-lg vertical-align:super">
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current flex-shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <span>Error: Can't connect with the Server</span>
+            </div>
+          </div>
+        ),
+      ]
+        )
+      })
+
   useEffect(() => {
     const poling = setInterval(() => {
-      fetch(
-        'https://script.googleusercontent.com/a/macros/f-sapporo.ed.jp/echo?user_content_key=BH8Kv2-HKQYYjlY7IqN45V38lEL1SzoVswu9259GzCNqdZheAUGElDH3UAFpbK1dMbrZjzC6hxqRxGzjnLYTBDnLNLb8gvf3OJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMi80zadyHLKD69xnUh-IhrsfB63eL3TaQ1djiqESLJYkXNcZoe1zwbJVFMimvbwDGwkl1xMkIUh9GcDqYzi69rNwOzl2svdDzwiMeXCzRPHnYlXVu6ZSvRTMBkFmQ3nSn6aEFGJJrzo5cy6pr-Oj0FQ&lib=McovRLwPv54_SYyI5iluMo5-ZE1Y-KuHf'
-      )
-        .then((response) => response.json())
-        .then((json) => {
-          json = JSON.parse(JSON.stringify(json));
-          console.log(json);
-          console.log(json.datas);
-          setMessage(
-            messages == json.datas.data
-              ? console.log('there are not post')
-              : json['datas']['data'].map((elm) =>
-                  userInfo.id == elm[2] ? (
-                    <MyBalloon children={elm[5]} />
-                  ) : (
-                    <OtherBalloon children={elm[5]} />
-                  )
-                )
-          );
-        })
-        .catch((e) => {
-          console.log(e);
-          setMessage([
-            <div className="alert alert-warning shadow-lg vertical-align:super">
-              <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="stroke-current flex-shrink-0 h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
-                <span>Error: Can't connect with the Server</span>
-              </div>
-            </div>,
-          ]);
-        });
-      return clearInterval(poling);
-    }, props.interval); // props.interval : useRef
+      getChat() 
+      return clearInterval(poling)
+    },props.interval); // props.interval : useRef()
   }, []);
+
 
   const handleClick = () => {
     console.log('Clicked');
-    console.log(`Message: ${inputValue.current}`);
-    setMessage([...messages, <MyBalloon children={inputValue.current} />]);
+    console.log(`Message: ${inputRef.current.value}`);
+    fetch(
+      `https://script.google.com/macros/s/AKfycbyGRApn5hMMSRMsCX3rmuQHv9EQ8QTZE9Sh7uFnuCXxhcGqgEA5v2ChsjDzqFeNXCtMKQ/exec?body=${inputRef.current.value}&displayName=${userInfo.displayName}&userID=${userInfo.userID}&bodyType=text`
+    );
+    setMessage([...messages, <MyBalloon children={inputRef.current.value} />]);
+    inputRef.current.value = '';
   };
 
   return (
@@ -197,8 +207,6 @@ const Chat = (props) => {
         className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
       >
         {messages}
-
-        <OtherBalloon children={'Hello'} />
         <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
           <div className="relative flex">
             {/* <span className="absolute inset-y-0 flex items-center">
@@ -223,9 +231,9 @@ const Chat = (props) => {
               </button>
             </span> */}
             <input
+              ref={inputRef}
               type="text"
               placeholder="Write your message!"
-              onChange={(e) => (inputValue.current = e.target.value)}
               className="w-full focus:outline-none focus:lder-gray-400 text-gray-600 placeholder-gray-600 pl-5 bg-gray-200 rounded-lg py-3"
             />
             <div className="absolute right-0 items-center sm:flex">
