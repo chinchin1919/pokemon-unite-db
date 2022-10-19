@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+// import ReactMarkdown from 'react-markdown';
 import { useUserInfoContext } from '../components/userInfo.jsx';
 
 const MyBalloon = ({ children }) => {
@@ -26,7 +26,7 @@ const MyBalloon = ({ children }) => {
 
 const OtherBalloon = ({ children }) => {
   return (
-    <div className="chat-message">
+    <div className="other-chat-message">
       <div className="flex items-end">
         <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
           <div>
@@ -62,65 +62,55 @@ const Chat = (props) => {
       .then((json) => {
         json = JSON.parse(JSON.stringify(json));
         console.log(json);
-        console.log(json.datas);
         setMessage(
           messages == json.datas.data
             ? console.log('there are not post')
-            : json['datas']['data'].map((elm) =>
-                userInfo.id == elm[2] ? (
-                  <MyBalloon children={elm[5]} />
+            : json['datas']['data'].map((elm, i) => {
+                const isMine = userInfo.current.userID == elm[2];
+                return isMine ? (
+                  <MyBalloon key={i} children={elm[5]} />
                 ) : (
-                  <OtherBalloon children={elm[5]} />
-                )
-              )
+                  <OtherBalloon key={i} children={elm[5]} />
+                );
+              })
         );
-      })
-      .catch((e) => {
-        console.log(e);
-        setMessage([
-          (
-<div className="alert alert-warning shadow-lg vertical-align:super">
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="stroke-current flex-shrink-0 h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-              <span>Error: Can't connect with the Server</span>
-            </div>
-          </div>
-        )
-          ,
-        ]);
       });
+  };
 
-    useEffect(() => {
-      const poling = setInterval(() => {
-        getChat();
-        return clearInterval(poling);
-      }, props.interval); // props.interval : useRef()
-    }, []);
+  useEffect(() => {
+    const poling = setInterval(() => {
+      getChat();
+      return clearInterval(poling);
+    }, props.interval); // props.interval : useRef()
+  }, []);
 
-    const handleClick = () => {
-      console.log('Clicked');
-      console.log(`Message: ${inputRef.current.value}`);
-      fetch(
-        `https://script.google.com/macros/s/AKfycbyGRApn5hMMSRMsCX3rmuQHv9EQ8QTZE9Sh7uFnuCXxhcGqgEA5v2ChsjDzqFeNXCtMKQ/exec?body=${inputRef.current.value}&displayName=${userInfo.displayName}&userID=${userInfo.userID}&bodyType=text`
-      );
-      setMessage([
-        ...messages,
-        <MyBalloon children={inputRef.current.value} />,
-      ]);
-      inputRef.current.value = '';
-    };
+  const handleClick = () => {
+    console.log(`Message: ${inputRef.current.value}`);
+    fetch(
+      `https://script.google.com/macros/s/AKfycbyGRApn5hMMSRMsCX3rmuQHv9EQ8QTZE9Sh7uFnuCXxhcGqgEA5v2ChsjDzqFeNXCtMKQ/exec?type=post&body=${inputRef.current.value}&displayName=${userInfo.current.displayName}&userID=${userInfo.current.userID}&bodyType=text`
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setMessage(
+          json['datas']['data'].map((elm) => {
+            console.log(
+              `${userInfo.current.userID} == ${elm[2]} : ${
+                userInfo.current.userID == elm[2]
+              }`
+            );
+            const isMine = userInfo.current.userID == elm[2];
+            console.log(isMine);
+            return isMine ? (
+              <MyBalloon children={elm[5]} />
+            ) : (
+              <OtherBalloon children={elm[5]} />
+            );
+          })
+        );
+      });
+    // setMessage([...messages, <MyBalloon children={inputRef.current.value} />]);
+    inputRef.current.value = '';
+  };
 
   return (
     <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
@@ -261,5 +251,4 @@ const Chat = (props) => {
     </div>
   );
 };
-
 export default Chat;
