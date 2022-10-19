@@ -8,8 +8,8 @@ export const useUserInfoContext = () => useContext(UserInfo);
 const makeStrID = (digits = 8) => {
   const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let g = '';
-  for (i = 0; i < digits; i++) {
-    g += c[Math.floor(Math.random() * cl)];
+  for (let i = 0; i < digits; i++) {
+    g += c[Math.floor(Math.random() * c)];
   }
   return g;
 };

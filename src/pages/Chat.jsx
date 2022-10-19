@@ -13,6 +13,7 @@ const MyBalloon = ({ children }) => {
               {children}
             </span>
           </div>
+          {/* <span class="text-xs text-gray-500 leading-none">2 min ago</span> */}
         </div>
         <img
           src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
@@ -24,14 +25,15 @@ const MyBalloon = ({ children }) => {
   );
 };
 
-const OtherBalloon = ({ children }) => {
+const OtherBalloon = (props) => {
   return (
     <div className="other-chat-message">
       <div className="flex items-end">
         <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
+        <span class="text-xs text-gray-300 inline-block leading-none">{props.name}</span>
           <div>
             <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
-              {children}
+              {props.children}
             </span>
           </div>
         </div>
@@ -49,66 +51,67 @@ const Chat = (props) => {
   const [messages, setMessage] = useState([]);
   const inputRef = useRef();
   const { userInfo } = useUserInfoContext();
+  const isFetching = useRef(false)
 
   useEffect(() => {
     console.log('reRendered');
   });
 
   const getChat = () => {
-    fetch(
-      'https://script.googleusercontent.com/a/macros/f-sapporo.ed.jp/echo?user_content_key=BH8Kv2-HKQYYjlY7IqN45V38lEL1SzoVswu9259GzCNqdZheAUGElDH3UAFpbK1dMbrZjzC6hxqRxGzjnLYTBDnLNLb8gvf3OJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMi80zadyHLKD69xnUh-IhrsfB63eL3TaQ1djiqESLJYkXNcZoe1zwbJVFMimvbwDGwkl1xMkIUh9GcDqYzi69rNwOzl2svdDzwiMeXCzRPHnYlXVu6ZSvRTMBkFmQ3nSn6aEFGJJrzo5cy6pr-Oj0FQ&lib=McovRLwPv54_SYyI5iluMo5-ZE1Y-KuHf'
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        json = JSON.parse(JSON.stringify(json));
-        console.log(json);
-        setMessage(
-          messages == json.datas.data
-            ? console.log('there are not post')
-            : json['datas']['data'].map((elm, i) => {
+    if (!isFetching.current) {
+      isFetching.current = true;
+      fetch(
+        'https://script.googleusercontent.com/a/macros/f-sapporo.ed.jp/echo?user_content_key=BH8Kv2-HKQYYjlY7IqN45V38lEL1SzoVswu9259GzCNqdZheAUGElDH3UAFpbK1dMbrZjzC6hxqRxGzjnLYTBDnLNLb8gvf3OJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMi80zadyHLKD69xnUh-IhrsfB63eL3TaQ1djiqESLJYkXNcZoe1zwbJVFMimvbwDGwkl1xMkIUh9GcDqYzi69rNwOzl2svdDzwiMeXCzRPHnYlXVu6ZSvRTMBkFmQ3nSn6aEFGJJrzo5cy6pr-Oj0FQ&lib=McovRLwPv54_SYyI5iluMo5-ZE1Y-KuHf'
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          json = JSON.parse(JSON.stringify(json));
+          console.log(json);
+          setMessage(
+            messages == json.datas.data
+              ? console.log('there are not post')
+              : json['datas']['data'].map((elm, i) => {
                 const isMine = userInfo.current.userID == elm[2];
                 return isMine ? (
-                  <MyBalloon key={i} children={elm[5]} />
+                  <MyBalloon key={elm[0]} children={elm[5]} />
                 ) : (
-                  <OtherBalloon key={i} children={elm[5]} />
+                  <OtherBalloon key={elm[0]} name={elm[3]} children={elm[5]} />
                 );
               })
-        );
-      });
+          );
+          isFetching.current = false;
+        })
+    };
   };
 
   useEffect(() => {
-    const poling = setInterval(() => {
-      getChat();
-      return clearInterval(poling);
-    }, props.interval); // props.interval : useRef()
+    const poling = setInterval(() => getChat(), 3000); // props.interval : useRef()
+    return () => clearInterval(poling)
   }, []);
 
   const handleClick = () => {
     console.log(`Message: ${inputRef.current.value}`);
+    setMessage([...messages, <MyBalloon children={inputRef.current.value} />]);
+    isFetching.current = true;
     fetch(
       `https://script.google.com/macros/s/AKfycbyGRApn5hMMSRMsCX3rmuQHv9EQ8QTZE9Sh7uFnuCXxhcGqgEA5v2ChsjDzqFeNXCtMKQ/exec?type=post&body=${inputRef.current.value}&displayName=${userInfo.current.displayName}&userID=${userInfo.current.userID}&bodyType=text`
     )
       .then((response) => response.json())
       .then((json) => {
+        console.log("Post to Set")
         setMessage(
           json['datas']['data'].map((elm) => {
-            console.log(
-              `${userInfo.current.userID} == ${elm[2]} : ${
-                userInfo.current.userID == elm[2]
-              }`
-            );
             const isMine = userInfo.current.userID == elm[2];
-            console.log(isMine);
             return isMine ? (
-              <MyBalloon children={elm[5]} />
+              <MyBalloon key={elm[0]} name={elm[3]} children={elm[5]} />
             ) : (
-              <OtherBalloon children={elm[5]} />
+              <OtherBalloon key={elm[0]} name={elm[3]} children={elm[5]} />
             );
           })
         );
+        isFetching.current = false;
       });
-    setMessage([...messages, <MyBalloon children={inputRef.current.value} />]);
+
     inputRef.current.value = '';
   };
 
@@ -116,7 +119,7 @@ const Chat = (props) => {
     <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
         <div className="relative flex items-center space-x-4">
-          <div className="relative">
+          {/* <div className="relative">
             <span className="absolute tshiext-green-500 right-0 bottom-0">
               <svg width="20" height="20">
                 <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
@@ -127,12 +130,12 @@ const Chat = (props) => {
               alt=""
               className="w-10 sm:w-16 h-10 sm:h-16 rounded-full"
             />
-          </div>
-          <div className="flex flex-col leading-tight">
+          </div> */}
+          <div className="flex flex-col leading-tight mx-2">
             <div className="text-2xl mt-1 flex items-center">
-              <span className="text-gray-700 mr-3">Anderson Vanhron</span>
+              <span className="text-gray-200 mr-3">Alpha Server</span>
             </div>
-            <span className="text-lg text-gray-600">Junior Developer</span>
+            <span className="text-lg text-gray-400">Chat data may be lost or suddenly unavailable due to maintenance</span>
           </div>
         </div>
         <div className="flex items-center space-x-2">
